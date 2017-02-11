@@ -1,34 +1,52 @@
 <?php
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
-* @Entity
-* @InheritanceType("JOINED")
-* @DiscriminatorColumn(name="discr", type="string")
-* @DiscriminatorMap({"person" = "Person", "employee" = "Employee"}) */
+ * @Entity
+ */
 class Person
 {
+    public function __construct() {
+        $this->attachments = new ArrayCollection();
+    }
+
     /**
      * @Id @Column(type="integer")
      * @GeneratedValue
      */
-    protected $id;
+    private $id;
 
     /**
      * @Column(type="string", length=50)
      */
-    protected $name;
+    private $name;
     // ...
+    /**
+     * @ORM\OneToMany(targetEntity="Attachment", mappedBy="person")
+     */
+    private $attachments;
 }
 
 /**
  * @Entity
  */
-class Employee extends Person
-{
+class Attachment {
+
+    /**
+     * @Id @Column(type="integer")
+     * @GeneratedValue
+     */
+    private $id;
+
     /**
      * @Column(type="string", length=50)
      */
-    private $department;
+    private $name;
 
-    // ...
+    /**
+     * @ORM\OneToOne(targetEntity="Person", inversedBy="attachments")
+     * @JoinColumn(name="person_id", referencedColumnName="id")
+     */
+    private $person;
 }

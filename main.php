@@ -27,7 +27,13 @@ $users = $query->getResult(Query::HYDRATE_OBJECT);
 
 var_dump($users);
 
-$query = $em->createQuery('SELECT p FROM Employee p');
+$dql = <<< DQL
+SELECT a 
+FROM Attachment a
+JOIN Person p WITH p.id = a.person_id
+DQL;
+$query = $em->createQuery($dql);
 $users = $query->getResult(Query::HYDRATE_OBJECT);
 
 var_dump($users);
+
