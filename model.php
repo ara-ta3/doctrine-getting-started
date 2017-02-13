@@ -23,9 +23,9 @@ class Person
     private $name;
     // ...
     /**
-     * @ORM\OneToMany(targetEntity="Attachment", mappedBy="person")
+     * @ORM\OneToOne(targetEntity="Attachment", mappedBy="person")
      */
-    private $attachments;
+    private $attachment;
 }
 
 /**
@@ -45,8 +45,36 @@ class Attachment {
     private $name;
 
     /**
-     * @ORM\OneToOne(targetEntity="Person", inversedBy="attachments")
+     * @ORM\OneToOne(targetEntity="Person")
      * @JoinColumn(name="person_id", referencedColumnName="id")
      */
     private $person;
+}
+
+/** @Entity */
+class Product {
+
+    /**
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue
+     */
+    private $id;
+
+    /**
+     * One Product has One Shipping.
+     * @OneToOne(targetEntity="Shipping")
+     * @JoinColumn(name="shipping_id", referencedColumnName="id")
+     */
+    private $shipping;
+}
+
+/** @Entity */
+class Shipping {
+    /**
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue
+     */
+    private $id;
 }
